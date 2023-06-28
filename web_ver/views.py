@@ -89,9 +89,20 @@ def get_songs_from_album(token, artist_name, album_id):
 def home():
     return render_template('index.html')
 
-# website.com/artist/[name]
-@views.route('/<name>')
-def game_hard(name):
+# website.com/[name#diff]
+# for example: ...com/kendrick%20lamar6easy
+@views.route('/<info>')
+def game(info):
+    name, strikes, difficulty = info[:-5], int(info[-5]), info[-4:]
+    print(name, strikes, difficulty)
+    if difficulty.lower() == "hard":
+        artist_name, all_tracks = get_tracks_hard(name)
+    else:
+        artist_name, all_tracks = get_tracks_easy(name)
+
+    return render_template('guess_song.html', artist_name=artist_name, artist_tracks_json=all_tracks, max_strikes=strikes)
+
+def get_tracks_hard(name):
     token = get_token()
     artist_info = search_for_artist(token, name)
     artist_id, artist_name = artist_info['id'], artist_info['name']
@@ -112,17 +123,23 @@ def game_hard(name):
         album_tracks = get_songs_from_album(token, artist_name, album['id'])
         if len(album_tracks.keys()) == 0: continue
         for track in list(album_tracks.keys()):
-          all_tracks[track] = album['name']
-
-    return render_template('guess_song.html', artist_name=artist_name, artist_tracks_json = all_tracks)
+          all_tracks[track] = {"name": album['name'], "cover": album['images'][0]}
+    return artist_name,all_tracks
 
 # # website.com/artist/[name]
 # @views.route('/artist/<name>')
-# def game_easy(name):
-#     token = get_token()
-#     artist_info = search_for_artist(token, name)
-#     artist_id, artist_name = artist_info['id'], artist_info['name']
-#     return render_template('guess_song.html', artist_name=artist_name, artist_tracks_json = get_top_tracks_by_artist(token, artist_id))
+def get_tracks_easy(name):
+    token = get_token()
+    artist_info = search_for_artist(token, name)
+    artist_id, artist_name = artist_info['id'], artist_info['name']
+    tracks_json = get_top_tracks_by_artist(token, artist_id)
+    top_tracks = {}
+    # print(track['name'], track['album']['name'],
+    #     track['album']['images'][0])  # album cover for easy
+    for track in tracks_json:
+      top_tracks[track['name']] = {"name": track['album']['name'], "cover": track['album']['images'][0]}
+    return artist_name, top_tracks
+      
 
 # # website.com/profile/[username]
 # @views.route('/profile/<username>')
