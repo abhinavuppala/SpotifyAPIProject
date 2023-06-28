@@ -27,9 +27,25 @@
         <input type="text" id="artistInput">
         <button onclick="getArtistInput()" id="inputButton"> Enter </button>
     </div>
+    <button onclick="toggleDifficulty()" id="difficultyButton"></button>
 
     <script type="text/javascript">
         // lets enter key trigger submitting input
+        const difficulty_options = ["easy", "hard"]
+        var difficulty = 0 // index for difficulty_options
+        var difficulty_button = document.getElementById("difficultyButton");
+        difficulty_button.innerHTML = difficulty_options[difficulty];
+
+        function toggleDifficulty()
+        {
+            if (difficulty == difficulty_options.length - 1)
+            {
+                difficulty = 0;
+            }
+            else difficulty++;
+            difficulty_button.innerHTML = difficulty_options[difficulty];
+        }
+
         var input_box = document.getElementById("artistInput");
         input_box.addEventListener("keypress", function(event)
         {
@@ -41,11 +57,14 @@
         });
 
         // links to game w/specific artist on enter/click
+        var input_given = false;
         function getArtistInput()
         {
+            if (input_given) return;
             var inputElement = document.getElementById("artistInput");
             var artistName = inputElement.value;
-            window.location.href = artistName;
+            window.location.href = artistName+"6"+difficulty_options[difficulty];
+            input_given = true; // prevent spam clicking
         }
     </script>
     <script type="text/javascript" src="{{url_for('static', filename='index.js')}}"></script>

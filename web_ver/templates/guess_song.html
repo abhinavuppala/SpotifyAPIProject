@@ -14,7 +14,9 @@
     <h2 id="strikes"></h2>
     <h3 id="guesses">temp</h3>
 
-    <div>
+    <div id="albumCoverDiv"></div>
+
+    <div id="guessElementsDiv">
         <label> Your guess: </label>
         <input type="text" id="guessInput">
         <button onclick="getGuessInput()" id="guessButton"> Enter </button>
@@ -34,6 +36,7 @@
 
         // get variables from flask request
         var artist_tracks_json = JSON.parse('{{ artist_tracks_json|tojson }}');
+        const max_strikes = JSON.parse('{{ max_strikes }}');
     </script>
     <script type="text/javascript" src="{{url_for('static', filename='guess_song.js')}}"> </script>
 </body>
