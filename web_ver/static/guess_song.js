@@ -2,25 +2,44 @@ console.log(artist_tracks_json);
 
 function replaceLettersNumbers(str, target)
 {
-    return str.replace(/[a-zA-Z0-9]/g, target)
+    return str.replace(/[a-zA-Z0-9]/g, target);
 }
 
 // pick random song/album key/value pair from the object
 const keys = Object.keys(artist_tracks_json);
 const rand = Math.floor(Math.random() * keys.length);
 const chosen_song = keys[rand];
-const chosen_album = artist_tracks_json[keys[rand]];
+const chosen_album = artist_tracks_json[keys[rand]]["name"];
+const chosen_cover = artist_tracks_json[keys[rand]]["cover"]["url"];
 
-var current_state = replaceLettersNumbers(chosen_song, '_')
+function showAlbumCover(parent_div)
+{
+    var cover = document.createElement("img");
+    cover.setAttribute("src", chosen_cover);
+    cover.setAttribute("alt", chosen_album+" album cover");
+    parent_div.appendChild(cover);
+}
 
-//document.getElementById("song_name").innerHTML = chosen_song;
-document.getElementById("song_name_hidden").innerHTML = current_state;
-document.getElementById("strikes").innerHTML = "Strikes: 0";
+console.log(artist_tracks_json);
+console.log(chosen_album, chosen_song, chosen_cover, strikes);
 
+var current_state = replaceLettersNumbers(chosen_song, '_');
 var guesses = [];
+var finished;
 var strikes = 0;
 
-var finished = false;
+if (current_state == chosen_song) // no English letters/numbers in the song
+{
+    finished = true;
+    document.getElementById("song_name_hidden").innerHTML = chosen_song;
+    document.getElementById("strikes").innerHTML = "Unfortunately, this does not support songs without English letters/numbers";
+}
+else
+{
+    finished = false;
+    document.getElementById("song_name_hidden").innerHTML = current_state;
+    document.getElementById("strikes").innerHTML = "Strikes: 0/"+max_strikes;
+}
 
 // every time the user submits a guess
 function getGuessInput()
@@ -68,19 +87,25 @@ function getGuessInput()
 
     if (current_state.toLowerCase() == chosen_song.toLowerCase()) finished = true;
 
-    if (finished) document.getElementById("end_message").innerHTML = "You won!";
+    if (finished)
+    {
+        finished = true;
+        document.getElementById("end_message").innerHTML = "You won!";
+        showAlbumCover(document.getElementById("albumCoverDiv"));
+    }
 
     console.log(guesses);
 
     //document.getElementById("song_name").innerHTML = chosen_song;
     document.getElementById("song_name_hidden").innerHTML = current_state;
-    document.getElementById("strikes").innerHTML = "Strikes: "+strikes;
+    document.getElementById("strikes").innerHTML = "Strikes: "+strikes+"/"+max_strikes;
     document.getElementById("guesses").innerHTML = guesses.toString();
 
-    if (strikes >= 6 && !finished) // lose if 6+ strikes
+    if (strikes >= max_strikes && !finished) // lose if 6+ strikes
     {
         finished = true;
         document.getElementById("end_message").innerHTML = "You lost! The answer was "+chosen_song;
+        showAlbumCover(document.getElementById("albumCoverDiv"));
     }
 }
 
