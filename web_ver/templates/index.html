@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <style>
+        li {display: inline;}
+    </style>
+</head>
+<body>
+    <div id="navBar">
+        <ul style="list-style-type: none; margin: 0; padding: 0;">
+            <!-- change these links later -->
+            <li><a href="default.asp">Home</a></li>
+            <li><a href="news.asp">News</a></li>
+            <li><a href="contact.asp">Contact</a></li>
+            <li><a href="about.asp">About</a></li>
+          </ul>
+    </div>
+
+    <div>
+        <h1>Home page!</h1>
+        <h2>Enter an artist's name:</h2>
+        <input type="text" id="artistInput">
+        <button onclick="getArtistInput()" id="inputButton"> Enter </button>
+    </div>
+
+    <script type="text/javascript">
+        // lets enter key trigger submitting input
+        var input_box = document.getElementById("artistInput");
+        input_box.addEventListener("keypress", function(event)
+        {
+            if (event.key === "Enter")
+            {
+                event.preventDefault();
+                document.getElementById("inputButton").click();
+            }
+        });
+
+        // links to game w/specific artist on enter/click
+        function getArtistInput()
+        {
+            var inputElement = document.getElementById("artistInput");
+            var artistName = inputElement.value;
+            window.location.href = artistName;
+        }
+    </script>
+    <script type="text/javascript" src="{{url_for('static', filename='index.js')}}"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the {{artist_name}} Song!</title>
+</head>
+<body>
+
+    <h1 id="end_message"></h1>
+    <h1 id="song_name"></h1>
+    <h1 id="song_name_hidden"></h1>
+    <h2 id="strikes"></h2>
+    <h3 id="guesses">temp</h3>
+
+    <div>
+        <label> Your guess: </label>
+        <input type="text" id="guessInput">
+        <button onclick="getGuessInput()" id="guessButton"> Enter </button>
+    </div>
+
+    <script type="text/javascript">
+        // lets enter key trigger submitting input
+        var input_box = document.getElementById("guessInput");
+        input_box.addEventListener("keypress", function(event)
+        {
+            if (event.key === "Enter")
+            {
+                event.preventDefault();
+                document.getElementById("guessButton").click();
+            }
+        });
+
+        // get variables from flask request
+        var artist_tracks_json = JSON.parse('{{ artist_tracks_json|tojson }}');
+    </script>
+    <script type="text/javascript" src="{{url_for('static', filename='guess_song.js')}}"> </script>
+</body>
+</html>
