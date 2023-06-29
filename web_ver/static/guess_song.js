@@ -6,6 +6,27 @@ function replaceLettersNumbers(str, target)
     return str.replace(/[a-zA-Z0-9]/g, target);
 }
 
+
+// verify this!!!!
+function remove_feature(song_name)
+{
+    const types = ['feat.', 'with', 'ft.']
+    const opening = "([{"
+    const closing = ")]}"
+    for (let i = 0; i < opening.length; i++)
+    {
+        for (let j = 0; j < types.length; j++)
+        {
+            if (song_name.includes(opening[i]+types[j]))
+            {
+                start = song_name.indexOf(opening[i]+types[j]);
+                end = song_name.indexOf(closing[i], start);
+                var song_name_cut = song_name.substring(0, start) + song_name.substring(end+1);
+            }
+        }
+    }
+}
+
 // pick random song/album key/value pair from the object
 const keys = Object.keys(artist_tracks_json);
 const rand = Math.floor(Math.random() * keys.length);
@@ -20,6 +41,22 @@ function showAlbumCover(parent_div)
     cover.setAttribute("src", chosen_cover);
     cover.setAttribute("alt", chosen_album+" album cover");
     parent_div.appendChild(cover);
+}
+
+function backButtonFunc() { window.location.href = ".."; }
+function reloadButtonFunc() { location.reload(); }
+
+// load buttons to restart & go back
+function loadButtons(parent_div)
+{
+    var backButton = document.createElement("button");
+    var restartButton = document.createElement("button");
+    backButton.setAttribute("onclick", "backButtonFunc()");
+    restartButton.setAttribute("onclick", "reloadButtonFunc()");
+    backButton.innerHTML = "Back";
+    restartButton.innerHTML = "Restart";
+    parent_div.appendChild(backButton);
+    parent_div.appendChild(restartButton);
 }
 
 // console.log(artist_tracks_json);
@@ -97,6 +134,7 @@ function getGuessInput()
         finished = true;
         document.getElementById("end_message").innerHTML = "You won!";
         showAlbumCover(document.getElementById("albumCoverDiv"));
+        loadButtons(document.getElementById("buttonsDiv"));
     }
 
     console.log(guesses);
@@ -111,5 +149,6 @@ function getGuessInput()
         finished = true;
         document.getElementById("end_message").innerHTML = "You lost! The answer was "+chosen_song;
         showAlbumCover(document.getElementById("albumCoverDiv"));
+        loadButtons(document.getElementById("buttonsDiv"));
     }
 }
