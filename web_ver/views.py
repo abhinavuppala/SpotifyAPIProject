@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, jsonify, redirect, url_for, send_from_directory
 import requests, json, base64
 
 views = Blueprint(__name__, 'views')
@@ -93,6 +93,9 @@ def home():
 def base():
     return render_template('base.html')
 
+@views.route('/favicon.ico') 
+def favicon(): 
+    return url_for('static', filename='data:,')
 # website.com/[name#diff]
 # for example: ...com/kendrick%20lamar6easy
 @views.route('/<info>')
@@ -152,9 +155,12 @@ def get_tracks_easy(name):
     # print(track['name'], track['album']['name'],
     #     track['album']['images'][0])  # album cover for easy
     for track in tracks_json:
+      # fixes issue with double quotes causing an error when converting str to JSON
+      if r'"' in rf"{track['name']}" or r'"' in rf"{track['album']['name']}": 
+         top_tracks[rf"{track['name']}".replace(r'"', r'\"')] = {"name": rf"{track['album']['name']}".replace(r'"', r'\"'), "cover": track['album']['images'][0]}
+         continue
       top_tracks[track['name']] = {"name": track['album']['name'], "cover": track['album']['images'][0]}
     return artist_name, top_tracks
-      
 
 # # website.com/profile/[username]
 # @views.route('/profile/<username>')
