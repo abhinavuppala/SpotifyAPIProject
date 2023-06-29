@@ -89,11 +89,26 @@ def get_songs_from_album(token, artist_name, album_id):
 def home():
     return render_template('index.html')
 
+@views.route('/testing')
+def base():
+    return render_template('base.html')
+
 # website.com/[name#diff]
 # for example: ...com/kendrick%20lamar6easy
 @views.route('/<info>')
 def game(info):
-    name, strikes, difficulty = info[:-5], int(info[-5]), info[-4:]
+    try:
+       name, strikes, difficulty = info[:-5], info[-5], info[-4:]
+    except: # link is not long enough, goes back to home page
+       return render_template('index.html')
+    try:
+       strikes = int(strikes)
+       if strikes < 1 or strikes > 9: print(int("lol"))
+    except: # defaults to 6 strikes if its not an int
+       strikes = 6
+    # defaults to easy difficulty
+    if difficulty.lower() not in ['easy', 'hard']: difficulty = 'easy'
+
     print(name, strikes, difficulty)
     if difficulty.lower() == "hard":
         artist_name, all_tracks = get_tracks_hard(name)
