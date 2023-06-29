@@ -1,43 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
+
+{% block html_title %}
     <title>Guess the {{artist_name}} Song!</title>
-</head>
-<body>
+{% endblock %}
 
-    <h1 id="end_message"></h1>
-    <h1 id="song_name"></h1>
-    <h1 id="song_name_hidden"></h1>
-    <h2 id="strikes"></h2>
-    <h3 id="guesses">temp</h3>
+{% block content %}
+<h1 id="end_message"></h1>
+<h1 id="song_name"></h1>
+<h1 id="song_name_hidden" style="letter-spacing: 0.08em;"></h1>
+<h2 id="strikes"></h2>
+<h3 id="guesses">temp</h3>
 
-    <div id="albumCoverDiv"></div>
+<div id="albumCoverDiv"></div>
 
-    <div id="guessElementsDiv">
-        <label> Your guess: </label>
-        <input type="text" id="guessInput">
-        <button onclick="getGuessInput()" id="guessButton"> Enter </button>
-    </div>
+<div id="guessElementsDiv">
+    <label> Your guess: </label>
+    <input type="text" id="guessInput">
+    <button onclick="getGuessInput()" id="guessButton"> Enter </button>
+</div>
 
-    <script type="text/javascript">
-        // lets enter key trigger submitting input
-        var input_box = document.getElementById("guessInput");
-        input_box.addEventListener("keypress", function(event)
+<script type="text/javascript">
+    // lets enter key trigger submitting input
+    var input_box = document.getElementById("guessInput");
+    input_box.addEventListener("keypress", function(event)
+    {
+        if (event.key === "Enter")
         {
-            if (event.key === "Enter")
-            {
-                event.preventDefault();
-                document.getElementById("guessButton").click();
-            }
-        });
+            event.preventDefault();
+            document.getElementById("guessButton").click();
+        }
+    });
 
-        // get variables from flask request
-        var artist_tracks_json = JSON.parse('{{ artist_tracks_json|tojson }}');
-        const max_strikes = JSON.parse('{{ max_strikes }}');
-    </script>
-    <script type="text/javascript" src="{{url_for('static', filename='guess_song.js')}}"> </script>
-</body>
-</html>
+    // get variables from flask request
+    var artist_tracks_json = JSON.parse('{{ artist_tracks_json|tojson }}');
+    const max_strikes = JSON.parse('{{ max_strikes }}');
+</script>
+<script type="text/javascript" src="{{url_for('static', filename='guess_song.js')}}"> </script>
+{% endblock %}

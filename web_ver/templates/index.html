@@ -1,72 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+{% extends "base.html" %}
 
-    <style>
-        li {display: inline;}
-    </style>
-</head>
-<body>
-    <div id="navBar">
-        <ul style="list-style-type: none; margin: 0; padding: 0;">
-            <!-- change these links later -->
-            <li><a href="default.asp">Home</a></li>
-            <li><a href="news.asp">News</a></li>
-            <li><a href="contact.asp">Contact</a></li>
-            <li><a href="about.asp">About</a></li>
-          </ul>
-    </div>
+{% block html_title %}
+    <title>Song Hangman!</title>
+{% endblock %}
 
-    <div>
-        <h1>Home page!</h1>
-        <h2>Enter an artist's name:</h2>
-        <input type="text" id="artistInput">
-        <button onclick="getArtistInput()" id="inputButton"> Enter </button>
-    </div>
+{% block content %}
+<style>
+    li {display: inline;}
+</style>
+
+<div>
+    <h1>Home page!</h1>
+    <h2>Enter an artist's name:</h2>
+    <input type="text" id="artistInput">
+    <button onclick="getArtistInput()" id="inputButton"> Enter </button>
+</div>
+<div>
     <button onclick="toggleDifficulty()" id="difficultyButton"></button>
+    <input type="range" min="1" max="9" value="6" id="strikeSlider">
+    <p id="strikeDisplay">Strikes: 6</p>
+</div>
 
-    <script type="text/javascript">
-        // lets enter key trigger submitting input
-        const difficulty_options = ["easy", "hard"]
-        var difficulty = 0 // index for difficulty_options
-        var difficulty_button = document.getElementById("difficultyButton");
+<script type="text/javascript">
+    // lets enter key trigger submitting input
+    const difficulty_options = ["easy", "hard"]
+    var difficulty = 0 // index for difficulty_options
+    var difficulty_button = document.getElementById("difficultyButton");
+    var strike_slider = document.getElementById("strikeSlider");
+    var strike_display = document.getElementById("strikeDisplay");
+    difficulty_button.innerHTML = difficulty_options[difficulty];
+
+    strike_slider.oninput = function() { strike_display.innerHTML = "Strikes: "+this.value; }
+
+    function toggleDifficulty()
+    {
+        if (difficulty == difficulty_options.length - 1)
+        {
+            difficulty = 0;
+        }
+        else difficulty++;
         difficulty_button.innerHTML = difficulty_options[difficulty];
+    }
 
-        function toggleDifficulty()
+    var input_box = document.getElementById("artistInput");
+    input_box.addEventListener("keypress", function(event)
+    {
+        if (event.key === "Enter")
         {
-            if (difficulty == difficulty_options.length - 1)
-            {
-                difficulty = 0;
-            }
-            else difficulty++;
-            difficulty_button.innerHTML = difficulty_options[difficulty];
+            event.preventDefault();
+            document.getElementById("inputButton").click();
         }
+    });
 
-        var input_box = document.getElementById("artistInput");
-        input_box.addEventListener("keypress", function(event)
-        {
-            if (event.key === "Enter")
-            {
-                event.preventDefault();
-                document.getElementById("inputButton").click();
-            }
-        });
-
-        // links to game w/specific artist on enter/click
-        var input_given = false;
-        function getArtistInput()
-        {
-            if (input_given) return;
-            var inputElement = document.getElementById("artistInput");
-            var artistName = inputElement.value;
-            window.location.href = artistName+"6"+difficulty_options[difficulty];
-            input_given = true; // prevent spam clicking
-        }
-    </script>
-    <script type="text/javascript" src="{{url_for('static', filename='index.js')}}"></script>
-</body>
-</html>
+    // links to game w/specific artist on enter/click
+    var input_given = false;
+    function getArtistInput()
+    {
+        if (input_given) return;
+        var inputElement = document.getElementById("artistInput");
+        var artistName = inputElement.value;
+        var strikes = strike_slider.value;
+        window.location.href = artistName+strikes+difficulty_options[difficulty];
+        input_given = true; // prevent spam clicking
+    }
+</script>
+<script type="text/javascript" src="{{url_for('static', filename='index.js')}}"></script>
+{% endblock %}
