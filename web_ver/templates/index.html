@@ -5,16 +5,14 @@
 {% endblock %}
 
 {% block content %}
-<style>
-    li {display: inline;}
-</style>
-
+<!-- Artist Entry Div -->
 <div>
     <h1>Home page!</h1>
     <h2>Enter an artist's name:</h2>
     <input type="text" id="artistInput">
     <button onclick="getArtistInput()" id="inputButton"> Enter </button>
 </div>
+<!-- Difficulty Input Div -->
 <div>
     <button onclick="toggleDifficulty()" id="difficultyButton"></button>
     <input type="range" min="1" max="9" value="6" id="strikeSlider">
@@ -22,7 +20,7 @@
 </div>
 
 <script type="text/javascript">
-    // lets enter key trigger submitting input
+    // getting HTML elements & defining variables
     const difficulty_options = ["easy", "hard"]
     var difficulty = 0 // index for difficulty_options
     var difficulty_button = document.getElementById("difficultyButton");
@@ -32,6 +30,7 @@
 
     strike_slider.oninput = function() { strike_display.innerHTML = "Strikes: "+this.value; }
 
+    // button for toggling difficulty w/easy & hard
     function toggleDifficulty()
     {
         if (difficulty == difficulty_options.length - 1)
@@ -42,6 +41,7 @@
         difficulty_button.innerHTML = difficulty_options[difficulty];
     }
 
+    // lets enter key trigger submitting input
     var input_box = document.getElementById("artistInput");
     input_box.addEventListener("keypress", function(event)
     {
