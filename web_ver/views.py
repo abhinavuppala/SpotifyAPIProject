@@ -127,7 +127,7 @@ def get_tracks_hard(name):
     albums_json = get_albums_by_artist(token, artist_id)
 
     # make this better - certain albums to avoid
-    album_ignore_list = ["Forest Hills Drive: Live from Fayetteville, NC"]
+    album_ignore_list = ["Forest Hills Drive: Live from Fayetteville, NC", "Live At Electric Lady"]
 
     # for each album, requests all tracks & saves them
     albums = {}
