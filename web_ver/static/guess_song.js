@@ -1,4 +1,5 @@
 console.log(artist_tracks_json);
+assignKeyboardInputs();
 
 // converts all numbers & letters to _
 function replaceLettersNumbers(str, target)
@@ -6,25 +7,72 @@ function replaceLettersNumbers(str, target)
     return str.replace(/[a-zA-Z0-9]/g, target);
 }
 
-
-// verify this!!!!
-function remove_feature(song_name)
+function removeInputElements()
 {
-    const types = ['feat.', 'with', 'ft.']
+    const inputDiv = document.getElementById("guessElementsDiv");
+    inputDiv.remove();
+}
+
+// add 1 point to score cookie, or initialize if hasnt been
+function updateScoreCookie()
+{
+    var c = document.cookie;
+    if (c == "")
+    {
+        document.cookie = "score=1";
+    }
+    else
+    {
+        var score;
+        try { score = parseInt(c.split("=")[1]) + 1; }
+        catch (e) { console.log(e); score = 1; }
+        document.cookie = "score="+score;
+    }
+}
+
+// creates/updates score on the page
+function displayScore()
+{
+    var scoreDiv = document.getElementById("scoreDiv");
+    var scoreText = document.getElementById("scoreText");
+    if (scoreText == null)
+    {
+        scoreText = document.createElement("h3");
+        scoreDiv.appendChild(scoreText);
+    }
+    c = document.cookie;
+    if (c == "") { scoreText.innerHTML = "Score: 0"; }
+    else { scoreText.innerHTML = "Score: "+c.split("=")[1]; }
+}
+
+// deletes score cookie, called upon returning to main menu
+function deleteScoreCookie()
+{
+    document.cookie = "score=; expires=Thu, 01 Jan 1970 00:00:00 UTC"
+}
+
+// doesnt work on songs w/o features in parenthesis
+// for example: WISH FEAT. KIDDO MARV
+// wont implement until it has been improved
+function removeFeatures(song_name)
+{
+    const types = ['feat.', 'with', 'ft.', 'featuring']
     const opening = "([{"
     const closing = ")]}"
     for (let i = 0; i < opening.length; i++)
     {
         for (let j = 0; j < types.length; j++)
         {
-            if (song_name.includes(opening[i]+types[j]))
+            if (song_name.toLowerCase().includes(opening[i]+types[j]))
             {
-                start = song_name.indexOf(opening[i]+types[j]);
-                end = song_name.indexOf(closing[i], start);
+                start = song_name.toLowerCase().indexOf(opening[i]+types[j]);
+                end = song_name.toLowerCase().indexOf(closing[i], start);
                 var song_name_cut = song_name.substring(0, start) + song_name.substring(end+1);
+                return song_name_cut;
             }
         }
     }
+    return song_name;
 }
 
 // pick random song/album key/value pair from the object
@@ -43,7 +91,7 @@ function showAlbumCover(parent_div)
     parent_div.appendChild(cover);
 }
 
-function backButtonFunc() { window.location.href = ".."; }
+function backButtonFunc() { window.location.href = ".."; deleteScoreCookie(); }
 function reloadButtonFunc() { location.reload(); }
 
 // load buttons to restart & go back
@@ -68,6 +116,9 @@ var guesses = [];
 var finished;
 var strikes = 0;
 
+var correct_letters = [];
+var wrong_letters = [];
+
 if (current_state == chosen_song) // no English letters/numbers in the song
 {
     finished = true;
@@ -82,12 +133,14 @@ else
 }
 
 // every time the user submits a guess
-function getGuessInput()
-{
+function getGuessInput(letter)
+{   
     if (finished) return; // game has already ended
 
     var inputElement = document.getElementById("guessInput");
-    var guess = inputElement.value;
+    
+    if (letter === null) var guess = inputElement.value; // guess from input box
+    else var guess = letter; // guess from the keyboard
     inputElement.value = "";
 
     if (guess.length == 0) return; // empty guess
@@ -110,7 +163,8 @@ function getGuessInput()
         }
         current_state = current_state.join("");
 
-        if (!changed) strikes++; // nothing was changed
+        if (!changed) { strikes++; wrong_letters.push(guess.toLowerCase()); } // nothing was changed
+        else { correct_letters.push(guess.toLowerCase()); } 
     }
     else // full phrase guess
     {
@@ -131,24 +185,68 @@ function getGuessInput()
     // user has won
     if (finished)
     {
-        finished = true;
-        document.getElementById("end_message").innerHTML = "You won!";
-        showAlbumCover(document.getElementById("albumCoverDiv"));
-        loadButtons(document.getElementById("buttonsDiv"));
+        win();
     }
 
     console.log(guesses);
+    console.log("Correct: " + correct_letters);
+    console.log("Wrong: " + wrong_letters);
 
     //document.getElementById("song_name").innerHTML = chosen_song;
     document.getElementById("song_name_hidden").innerHTML = current_state;
     document.getElementById("strikes").innerHTML = "Strikes: "+strikes+"/"+max_strikes;
     document.getElementById("guesses").innerHTML = guesses.toString();
+    updateKeyboardShading();
 
     if (strikes >= max_strikes && !finished) // lose if strike limit reached
     {
-        finished = true;
-        document.getElementById("end_message").innerHTML = "You lost! The answer was "+chosen_song;
-        showAlbumCover(document.getElementById("albumCoverDiv"));
-        loadButtons(document.getElementById("buttonsDiv"));
+        lose();
     }
+}
+
+// give all keys an onclick function to guess the respective letter
+function assignKeyboardInputs()
+{
+    for (const key of document.getElementsByClassName("keyboard-button"))
+    {
+        key.setAttribute("onclick", "getGuessInput('"+key.innerHTML+"')");
+    }
+}
+
+// update each of the keys to be the correct color
+// green - correct, red - wrong, gray - not guessed
+function updateKeyboardShading()
+{
+    for (const key of document.getElementsByClassName("keyboard-button"))
+    {
+        const letter = key.innerHTML;
+        if (correct_letters.includes(letter.toLowerCase())) var color = 'green';
+        else if (wrong_letters.includes(letter.toLowerCase())) var color = 'red';
+        else var color = 'lightgray';
+
+        key.style.backgroundColor = color;
+    }
+}
+
+// removes keyboard, input buttons, and shows album cover & score when user loses
+function lose() {
+    finished = true;
+    document.getElementById("end_message").innerHTML = "You lost! The answer was " + chosen_song;
+    showAlbumCover(document.getElementById("albumCoverDiv"));
+    loadButtons(document.getElementById("buttonsDiv"));
+    removeInputElements();
+    displayScore();
+    document.getElementById("keyboard-cont").remove();
+}
+
+// removes keyboard, input buttons, and shows album cover & score when user loses. Also adds a point
+function win() {
+    finished = true;
+    document.getElementById("end_message").innerHTML = "You won!";
+    showAlbumCover(document.getElementById("albumCoverDiv"));
+    loadButtons(document.getElementById("buttonsDiv"));
+    updateScoreCookie();
+    removeInputElements();
+    displayScore();
+    document.getElementById("keyboard-cont").remove();
 }
