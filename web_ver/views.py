@@ -66,7 +66,6 @@ def get_albums_by_artist(token, artist_id):
   #print(json_result)
   return json_result
 
-
 # given JSON of albums, get all tracks from them
 def get_songs_from_album(token, artist_name, album_id):
   tracks = {}
