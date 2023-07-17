@@ -5,40 +5,150 @@
 {% endblock %}
 
 {% block content %}
-<!-- Artist Entry Div -->
-<div>
-    <h1>Home page!</h1>
-    <h2>Enter an artist's name:</h2>
-    <input type="text" id="artistInput">
-    <button onclick="getArtistInput()" id="inputButton"> Enter </button>
+
+<style>
+    .websiteHeader
+    {
+        display: inline-block;
+    }
+    .centered
+    {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+    #easyButton, #hardButton
+    {
+        width: 60px;
+        height: 40px;
+        border-radius: 30%;
+    }
+    #easyButton { margin-right: 40px; }
+    #overlay
+    {
+        position: fixed;
+        top: 5%;
+        left: 5%;
+        width: 90%;
+        height: 90%;
+        z-index: 9999;
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+</style>
+
+<!-- Website Title -->
+<div style="text-align: center; padding-bottom: 5vh; padding-top: 5vh;">
+    <h1 class="websiteHeader">Song Hangman</h1> <a style="color: lightgray;" href="https://www.linkedin.com/in/abhinav-uppala/"><h6 class="websiteHeader">by Abhinav Uppala</h6>
+    </div></a> 
+
+<!-- Majority of content here -->
+<div class="row">
+    <!-- Artist Name Input col -->
+    <div class="col-md-4 centered">
+        <h2>Artist's Name</h2>
+        <input type="text" id="artistInput" onkeyup="updateNameDesc(this.value)">
+        <button onclick="getArtistInput()" id="inputButton"> ↵ </button>
+        <p>Play hangman with a random song from <strong id="artistNameDesc">the desired artist</strong></p>
+    </div>
+    <!-- Difficulty Selection col -->
+    <div class="col-md-4 centered">
+        <h2>Select Difficulty</h2>
+        <button onclick="toggleDifficulty()" id="easyButton" style="background-color: green;">Easy</button>
+        <button onclick="toggleDifficulty()" id="hardButton" style="background-color: lightgray;">Hard</button>
+        <p id="difficultyDisplay"></p>
+    </div>
+    <!-- Strike Selection col -->
+    <div class="col-md-4 centered">
+        <h2>Choose Strikes</h2>
+        <input type="range" min="1" max="9" value="6" id="strikeSlider" class="slider">
+        <p>You get <strong id="strikeDisplay">6</strong> wrong attempts until you lose</p>
+    </div>
 </div>
-<!-- Difficulty Input Div -->
-<div>
-    <button onclick="toggleDifficulty()" id="difficultyButton"></button>
-    <input type="range" min="1" max="9" value="6" id="strikeSlider">
-    <p id="strikeDisplay">Strikes: 6</p>
+
+<!-- help menu -->
+<div style="text-align: center; padding-top: 8vh; text-decoration: underline;">
+    <h6 onclick="showOverlay()">Help! I don't know how to play!</h6>
+</div>
+
+<div id="overlay">
+    <div class="container">
+        <div style="text-align: right; padding-right: 3%; padding-top: 1%">
+            <h1 onclick="hideOverlay()">X</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <h5>Disclaimer</h5>
+            </div>
+            <div class="col-md-9">
+                <p>This game will only work with artists who are on Spotify and who have English song titles.
+                </p>
+            </div>
+        </div>
+        <div style="text-align: center; padding-bottom: 5vh; padding-top: 2vh;">
+            <h2>How to play</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <h5>Song Hangman Rules</h5>
+            </div>
+            <div class="col-md-9">
+                <p>In this game, you play hangman, except you are trying to guess a random song made by your chosen artist.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <h5>Hangman Rules</h5>
+            </div>
+            <div class="col-md-9">
+                <p>You take turns guessing either a letter/number that might be in the song, or the entire song name. If the letter/number
+                    is in the song name, all occurences of that character are revealed. If not, the "hangman" gets closer to being hung.
+                    To win, guess the full song name before the hangman is completed. 
+                </p>
+            </div>
+        </div>
+        <div class="centered">
+            <button onclick="hideOverlay()" style="width: 70px; height: 50px;"><strong>Got it!</strong></button>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
     // getting HTML elements & defining variables
     const difficulty_options = ["easy", "hard"]
+    const difficulty_descriptions = ["Picks a random song from most popular songs", "Picks a random song from ANY album or single"]
     var difficulty = 0 // index for difficulty_options
-    var difficulty_button = document.getElementById("difficultyButton");
+    var difficulty_display = document.getElementById("difficultyDisplay");
     var strike_slider = document.getElementById("strikeSlider");
     var strike_display = document.getElementById("strikeDisplay");
-    difficulty_button.innerHTML = difficulty_options[difficulty];
+    difficulty_display.innerHTML = difficulty_descriptions[difficulty];
 
-    strike_slider.oninput = function() { strike_display.innerHTML = "Strikes: "+this.value; }
+    strike_slider.oninput = function() { strike_display.innerHTML = this.value; }
+
+    function updateNameDesc(name)
+    {
+        if (name == "") name = "the desired artist"
+        document.getElementById("artistNameDesc").innerHTML = name;
+    }
 
     // button for toggling difficulty w/easy & hard
     function toggleDifficulty()
     {
+        let hard_button = document.getElementById("hardButton");
+        let easy_button = document.getElementById("easyButton");
         if (difficulty == difficulty_options.length - 1)
         {
             difficulty = 0;
+            easy_button.style.backgroundColor = "green";
+            hard_button.style.backgroundColor = "lightgray";
         }
-        else difficulty++;
-        difficulty_button.innerHTML = difficulty_options[difficulty];
+        else 
+        {
+            difficulty++;
+            easy_button.style.backgroundColor = "lightgray";
+            hard_button.style.backgroundColor = "red";
+        }
+        difficulty_display.innerHTML = difficulty_descriptions[difficulty];
     }
 
     // lets enter key trigger submitting input
@@ -59,10 +169,15 @@
         if (input_given) return;
         var inputElement = document.getElementById("artistInput");
         var artistName = inputElement.value;
+        if (artistName == "") return;
         var strikes = strike_slider.value;
         window.location.href = artistName+strikes+difficulty_options[difficulty];
         input_given = true; // prevent spam clicking
     }
+
+    function hideOverlay() { document.getElementById("overlay").style.display = "none"; }
+    function showOverlay() { document.getElementById("overlay").style.display = "block"; }
+    hideOverlay()
 </script>
 <script type="text/javascript" src="{{url_for('static', filename='index.js')}}"></script>
 {% endblock %}
