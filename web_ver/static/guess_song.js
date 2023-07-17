@@ -196,6 +196,7 @@ function getGuessInput(letter)
     document.getElementById("song_name_hidden").innerHTML = current_state;
     document.getElementById("strikes").innerHTML = "Strikes: "+strikes+"/"+max_strikes;
     document.getElementById("guesses").innerHTML = guesses.toString();
+    updateHangmanImage();
     updateKeyboardShading();
 
     if (strikes >= max_strikes && !finished) // lose if strike limit reached
@@ -226,6 +227,12 @@ function updateKeyboardShading()
 
         key.style.backgroundColor = color;
     }
+}
+
+function updateHangmanImage()
+{
+    img = document.getElementById("hangman_img");
+    img.src = hangman_paths[images_for_each_strike[max_strikes][strikes]];
 }
 
 // removes keyboard, input buttons, and shows album cover & score when user loses
