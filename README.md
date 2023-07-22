@@ -1,11 +1,12 @@
 # Song Hangman
 
-## Created Using
+## Languages/Frameworks Used
 
-- Python: Flask
+- [Spotify API](https://developer.spotify.com/)
+- Python: [Flask](https://flask.palletsprojects.com/en/2.3.x/)
 - JavaScript
 - HTML
-- CSS: Bootstrap
+- CSS: [Bootstrap](https://getbootstrap.com/docs/3.4/css/)
 
 ## How it works
 
@@ -15,6 +16,6 @@ colors as the user guesses a character to indicate a correct/incorrect guess.
 
 ## Features
 
-- Uses cookies to save info & avoid unnecessary API calls
-- Responsive UI, works both on mobile & desktop
+- Responsive UI, functions & looks good on both mobile & desktop
+- Uses cookies to save info, avoid unnecessary API calls & significantly lower loading time
 - 
