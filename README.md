@@ -16,7 +16,7 @@ Alternatively, if you want to download & host the server on your local device, f
 
 1. Save the files from this repo to your local device.
 2. Make sure you have the correct Python libraries, as outlined in requirements.txt.
-3. Navigate to the web_ver directory and run app.py using command prompt like so.
+3. Navigate to the web_ver directory and run app.py using command prompt like so:
 ```cmd
 python app.py
 ```
