@@ -1,7 +1,3 @@
-# Look into Songstats API, could be better?
-# or use request type to create playlist & link to website
-# Django for python web dev backend
-
 import sys
 import os
 import base64
