@@ -1,6 +1,38 @@
 console.log(artist_tracks_json);
 assignKeyboardInputs();
 
+if (artist_tracks_json == "cookie")
+{
+    artist_tracks_json = getTracksFromCookie();
+}
+console.log(artist_tracks_json);
+
+// combine cookies together to get all artist track info
+function getTracksFromCookie()
+{
+    let c = document.cookie.split(";");
+    let parts = {};
+    for(var i = 0; i < c.length; i++) // get all tracks parts
+    {
+        let cookiePair = c[i].split("=");
+        if (cookiePair[0].trim().substring(0, 6) == "tracks")
+        {
+            // console.log(cookiePair[0]);
+            parts[cookiePair[0].trim()] = cookiePair[1]; // ex: tracks5
+        }
+    }
+    // console.log(parts);
+    let k = 0;
+    let s = ""
+    while ("tracks"+k in parts) // combine string parts
+    {
+        s += parts["tracks"+k];
+        k++;
+    }
+    // console.log(s);
+    return JSON.parse(decodeURIComponent(s));
+}
+
 // converts all numbers & letters to _
 function replaceLettersNumbers(str, target)
 {
@@ -13,25 +45,46 @@ function removeInputElements()
     inputDiv.remove();
 }
 
-// add 1 point to score cookie, or initialize if hasnt been
-function updateScoreCookie()
+function createStreakCookie(val)
 {
-    var c = document.cookie;
-    if (c == "")
-    {
-        document.cookie = "score=1";
-    }
-    else
-    {
-        var score;
-        try { score = parseInt(c.split("=")[1]) + 1; }
-        catch (e) { console.log(e); score = 1; }
-        document.cookie = "score="+score;
-    }
+    document.cookie = "streak="+val;
 }
 
-// creates/updates score on the page
-function displayScore()
+function resetStreakCookie()
+{
+    let c = document.cookie.split(";");
+    let updated = false;
+    for(var i = 0; i < c.length; i++)
+    {
+        let cookiePair = c[i].split("=");
+        if (cookiePair[0].trim() == "streak")
+        {
+            document.cookie = "streak=0";
+            updated = true;
+            console.log("reset streak cookie");
+        }
+    }
+    if (!updated) createStreakCookie(0); console.log("created Cookie w/0");
+}
+
+function increaseStreakCookie()
+{
+    let c = document.cookie.split(";");
+    let updated = false;
+    for(var i = 0; i < c.length; i++)
+    {
+        let cookiePair = c[i].split("=");
+        if (cookiePair[0].trim() == "streak")
+        {
+            document.cookie = "streak="+(parseInt(cookiePair[1].trim())+1);
+            updated = true;
+            console.log("increased cookie by 1");
+        }
+    }
+    if (!updated) createStreakCookie(1); console.log("created Cookie w/1");
+}
+
+function displayStreak()
 {
     var scoreDiv = document.getElementById("scoreDiv");
     var scoreText = document.getElementById("scoreText");
@@ -40,16 +93,46 @@ function displayScore()
         scoreText = document.createElement("h3");
         scoreDiv.appendChild(scoreText);
     }
-    c = document.cookie;
-    if (c == "") { scoreText.innerHTML = "Score: 0"; }
-    else { scoreText.innerHTML = "Score: "+c.split("=")[1]; }
+    scoreText.innerHTML = "Streak: "+getStreak();
 }
 
-// deletes score cookie, called upon returning to main menu
-function deleteScoreCookie()
+function getStreak()
 {
-    document.cookie = "score=; expires=Thu, 01 Jan 1970 00:00:00 UTC"
+    let c = document.cookie.split(";");
+    for(let i = 0; i < c.length; i++)
+    {
+        let cookiePair = c[i].split("=");
+        if (cookiePair[0].trim() == "streak")
+        {
+            return cookiePair[1].trim();
+        }
+    }
+    return "-1";
 }
+
+
+// // add 1 point to score cookie, or initialize if hasnt been
+// function updateScoreCookie()
+// {
+//     var c = document.cookie;
+//     if (c == "")
+//     {
+//         document.cookie = "score=1";
+//     }
+//     else
+//     {
+//         var score;
+//         try { score = parseInt(c.split("=")[1]) + 1; }
+//         catch (e) { console.log(e); score = 1; }
+//         document.cookie = "score="+score;
+//     }
+// }
+
+// // deletes score cookie, called upon returning to main menu
+// function deleteScoreCookie()
+// {
+//     document.cookie = "score=; expires=Thu, 01 Jan 1970 00:00:00 UTC"
+// }
 
 // doesnt work on songs w/o features in parenthesis
 // for example: WISH FEAT. KIDDO MARV
@@ -88,11 +171,33 @@ function showAlbumCover(parent_div)
     var cover = document.createElement("img");
     cover.setAttribute("src", chosen_cover);
     cover.setAttribute("alt", chosen_album+" album cover");
+    cover.setAttribute("width", "80%");
+    cover.setAttribute("height", "auto");
     parent_div.appendChild(cover);
 }
 
-function backButtonFunc() { window.location.href = ".."; deleteScoreCookie(); }
-function reloadButtonFunc() { location.reload(); }
+function backButtonFunc() { window.location.href = "..";}
+function reloadButtonFunc() // reloads page, and also updates repeat parameter
+{
+    let jsonStr = encodeURIComponent(JSON.stringify(artist_tracks_json));
+    let numCookies = Math.ceil(new Blob([jsonStr]).size / 4000);
+    let test = "";
+    for (let i = 0; i < numCookies-1; i++)
+    {
+        console.log(i * 4000, (i+1) * 4000 - 1);
+        document.cookie = "tracks"+i+"="+jsonStr.substring(i * 4000, (i+1) * 4000);
+        test += jsonStr.substring(i * 4000, (i+1) * 4000);
+    }
+    console.log((numCookies - 1) * 4000, jsonStr.length);
+    document.cookie = "tracks"+(numCookies-1)+"="+jsonStr.substring((numCookies - 1) * 4000, jsonStr.length);
+    test += jsonStr.substring((numCookies - 1) * 4000, jsonStr.length)
+
+    console.log(test == jsonStr);
+
+    let current = window.location.href;
+    if (current.substring(current.length - 5) == "false") current = current.substring(0, current.length - 5) + "true";
+    window.location.assign(current);
+}
 
 // load buttons to restart & go back
 function loadButtons(parent_div)
@@ -195,7 +300,14 @@ function getGuessInput(letter)
     //document.getElementById("song_name").innerHTML = chosen_song;
     document.getElementById("song_name_hidden").innerHTML = current_state;
     document.getElementById("strikes").innerHTML = "Strikes: "+strikes+"/"+max_strikes;
-    document.getElementById("guesses").innerHTML = guesses.toString();
+
+    let phrase_guesses = [];
+    for (const guess of guesses)
+    {
+        if (guess.length > 1) phrase_guesses.push(guess);
+    }
+
+    document.getElementById("guesses").innerHTML = phrase_guesses.toString();
     updateHangmanImage();
     updateKeyboardShading();
 
@@ -238,12 +350,15 @@ function updateHangmanImage()
 // removes keyboard, input buttons, and shows album cover & score when user loses
 function lose() {
     finished = true;
-    document.getElementById("end_message").innerHTML = "You lost! The answer was " + chosen_song;
+    document.getElementById("end_message").innerHTML = "You lost!";
     showAlbumCover(document.getElementById("albumCoverDiv"));
     loadButtons(document.getElementById("buttonsDiv"));
     removeInputElements();
-    displayScore();
+    resetStreakCookie();
+    displayStreak();
     document.getElementById("keyboard-cont").remove();
+    showOverlay();
+    document.getElementById("song_name").innerHTML = chosen_song;
 }
 
 // removes keyboard, input buttons, and shows album cover & score when user loses. Also adds a point
@@ -252,8 +367,11 @@ function win() {
     document.getElementById("end_message").innerHTML = "You won!";
     showAlbumCover(document.getElementById("albumCoverDiv"));
     loadButtons(document.getElementById("buttonsDiv"));
-    updateScoreCookie();
+    increaseStreakCookie();
+    //updateScoreCookie();
     removeInputElements();
-    displayScore();
+    displayStreak();
     document.getElementById("keyboard-cont").remove();
+    showOverlay();
+    document.getElementById("song_name").innerHTML = chosen_song;
 }
