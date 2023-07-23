@@ -8,14 +8,14 @@
 <style>
 
 #keyboard-cont {
-  margin: 1rem 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #keyboard-cont div {
-  display: flex;
+    display: flex;
 }
 
 .first-row {
@@ -23,99 +23,149 @@
 }
 
 .second-row {
-  margin: 0.5rem 0;
+    margin: 0.5rem 0;
 }
 
 .keyboard-button {
-  font-size: 1rem;
-  font-weight: 700;
-  padding: 0.5rem;
-  margin: 0 2px;
-  cursor: pointer;
-  text-transform: uppercase;
-  background-color: lightgray;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.5rem;
+    margin: 0 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    background-color: lightgray;
+}
+
+#overlay
+{
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+.centered
+{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+.padtopbottom
+{
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
 
 </style>
 
-<div class="row"> 
-    <div class="col-md-8">
-        <h1 id="end_message"></h1>
-        <h1 id="song_name"></h1>
-        <h1 id="song_name_hidden" style="letter-spacing: 0.08em;"></h1>
-    </div>
-    <div class="col-md-4">
-        <img id="hangman_img" width="150vw" height="100vh" src="{{url_for('static', filename='hangman_imgs/h0.jpg')}}">
-    </div>
+<!-- Title -->
+<div class="row centered padtopbottom">
+    <h1 id="song_name_hidden" style="letter-spacing: 0.08em;"></h1>
+    <h6> by {{artist_name}}</h6>
 </div>
 
+<!-- Game Content -->
 <div class="row">
-    <h2 class="col-md-2" id="strikes"></h2>
-    <h3 class="col-md-6" id="guesses"></h3>
+    <div class="col-md-5">
+        <img id="hangman_img" width="100%" height="auto" src="{{url_for('static', filename='hangman_imgs/h0.jpg')}}">
+        <h4 id="strikes" style="padding-top: 2%;"></h4>
+        <p>Guesses: <strong id="guesses"></strong></p>
+    </div>
+    <div class="col-md-7">
+        <div id="guessElementsDiv" class="centered" style="padding-bottom: 5%;">
+            <label> Your guess: </label>
+            <input type="text" id="guessInput">
+            <button onclick="getGuessInput(null)" id="guessButton"> ↵ </button>
+        </div>
+        <div id="keyboard-cont">
+            <div class="numbers-row">
+                <button class="keyboard-button">1</button>
+                <button class="keyboard-button">2</button>
+                <button class="keyboard-button">3</button>
+                <button class="keyboard-button">4</button>
+                <button class="keyboard-button">5</button>
+                <button class="keyboard-button">6</button>
+                <button class="keyboard-button">7</button>
+                <button class="keyboard-button">8</button>
+                <button class="keyboard-button">9</button>
+                <button class="keyboard-button">0</button>
+            </div>
+            <div class="first-row">
+                <button class="keyboard-button">q</button>
+                <button class="keyboard-button">w</button>
+                <button class="keyboard-button">e</button>
+                <button class="keyboard-button">r</button>
+                <button class="keyboard-button">t</button>
+                <button class="keyboard-button">y</button>
+                <button class="keyboard-button">u</button>
+                <button class="keyboard-button">i</button>
+                <button class="keyboard-button">o</button>
+                <button class="keyboard-button">p</button>
+            </div>
+            <div class="second-row">
+                <button class="keyboard-button">a</button>
+                <button class="keyboard-button">s</button>
+                <button class="keyboard-button">d</button>
+                <button class="keyboard-button">f</button>
+                <button class="keyboard-button">g</button>
+                <button class="keyboard-button">h</button>
+                <button class="keyboard-button">j</button>
+                <button class="keyboard-button">k</button>
+                <button class="keyboard-button">l</button>
+            </div>
+            <div class="third-row">
+                <button class="keyboard-button">Del</button>
+                <button class="keyboard-button">z</button>
+                <button class="keyboard-button">x</button>
+                <button class="keyboard-button">c</button>
+                <button class="keyboard-button">v</button>
+                <button class="keyboard-button">b</button>
+                <button class="keyboard-button">n</button>
+                <button class="keyboard-button">m</button>
+                <button class="keyboard-button">Enter</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div id="scoreDiv"></div>
-
-<div id="albumCoverDiv"></div>
-
-<div id="guessElementsDiv">
-    <label> Your guess: </label>
-    <input type="text" id="guessInput">
-    <button onclick="getGuessInput(null)" id="guessButton"> Enter </button>
-</div>
-
-<div id="keyboard-cont">
-    <div class="numbers-row">
-        <button class="keyboard-button">1</button>
-        <button class="keyboard-button">2</button>
-        <button class="keyboard-button">3</button>
-        <button class="keyboard-button">4</button>
-        <button class="keyboard-button">5</button>
-        <button class="keyboard-button">6</button>
-        <button class="keyboard-button">7</button>
-        <button class="keyboard-button">8</button>
-        <button class="keyboard-button">9</button>
-        <button class="keyboard-button">0</button>
+<!-- Overlay, displayed when game is over -->
+<div id="overlay" class="centered">
+    <div class="row">
+        <h1 id="end_message"></h1>
     </div>
-    <div class="first-row">
-        <button class="keyboard-button">q</button>
-        <button class="keyboard-button">w</button>
-        <button class="keyboard-button">e</button>
-        <button class="keyboard-button">r</button>
-        <button class="keyboard-button">t</button>
-        <button class="keyboard-button">y</button>
-        <button class="keyboard-button">u</button>
-        <button class="keyboard-button">i</button>
-        <button class="keyboard-button">o</button>
-        <button class="keyboard-button">p</button>
+    <!-- Only shown on small devices -->
+    <div class="row d-block d-sm-block d-md-none d-lg-none d-xl-none">
+        <h4 id="song_name"></h1>
+        <h6> by {{artist_name}} </h6>
+        <div id="albumCoverDiv"></div>
+        <div id="scoreDiv"></div>
     </div>
-    <div class="second-row">
-        <button class="keyboard-button">a</button>
-        <button class="keyboard-button">s</button>
-        <button class="keyboard-button">d</button>
-        <button class="keyboard-button">f</button>
-        <button class="keyboard-button">g</button>
-        <button class="keyboard-button">h</button>
-        <button class="keyboard-button">j</button>
-        <button class="keyboard-button">k</button>
-        <button class="keyboard-button">l</button>
+    <!-- Only show on medium/lg devices -->
+    <div class="row d-none d-sm-none d-md-block d-lg-block d-xl-block">
+        <!-- avoid duplicate IDs -->
+        <div class="col-md-6">
+            <h4 id="song_name"></h1>
+            <h6> by {{artist_name}} </h6>
+            <div id="scoreDiv"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="albumCoverDiv"></div>
+        </div>
     </div>
-    <div class="third-row">
-        <button class="keyboard-button">Del</button>
-        <button class="keyboard-button">z</button>
-        <button class="keyboard-button">x</button>
-        <button class="keyboard-button">c</button>
-        <button class="keyboard-button">v</button>
-        <button class="keyboard-button">b</button>
-        <button class="keyboard-button">n</button>
-        <button class="keyboard-button">m</button>
-        <button class="keyboard-button">Enter</button>
+    <div class="row">
+        <div id="buttonsDiv"></div>
     </div>
 </div>
-
-<div id="buttonsDiv"></div>
 
 <script type="text/javascript">
+    
+    function hideOverlay() { document.getElementById("overlay").style.display = "none"; }
+    function showOverlay() { document.getElementById("overlay").style.display = "block"; }
+    
+    hideOverlay();
+
     // lets enter key trigger submitting input
     var input_box = document.getElementById("guessInput");
     input_box.addEventListener("keypress", function(event)
