@@ -1,4 +1,2 @@
- - show album cover once game is over
- - slider for how many strikes for game
- - [BIG] make HTML/CSS template and incorporate inheritance
+ - create different ending layouts with JS, avoid dupe ID
  - Zdzisław Beksiński

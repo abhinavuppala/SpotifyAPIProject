@@ -119,6 +119,42 @@ def game(info):
 
     return render_template('guess_song.html', artist_name=artist_name, artist_tracks_json=all_tracks, max_strikes=strikes)
 
+@views.route('/game')
+def game2():
+    args = request.args
+    try:
+       name, strikes, difficulty, repeat = args.get('name'), args.get('strikes'), args.get('difficulty'), args.get('repeat')
+    except: # link is not long enough, goes back to home page
+       return render_template('index.html')
+    try:
+       strikes = int(strikes)
+       if strikes < 1 or strikes > 9: print(int("lol"))
+    except: # defaults to 6 strikes if its not an int
+       strikes = 6
+    # defaults to easy difficulty
+    if difficulty.lower() not in ['easy', 'hard']: difficulty = 'easy'
+    if repeat == 'true': repeat = True
+    else: repeat = False
+
+    print(name, strikes, difficulty)
+    if not repeat: 
+        if difficulty.lower() == "hard":
+            artist_name, all_tracks = get_tracks_hard(name)
+        else:
+            artist_name, all_tracks = get_tracks_easy(name)
+    else:
+        artist_name = get_artist_info(name)['name'] # if game is repeated, store tracks json in cookie
+        all_tracks = "cookie"
+    print(artist_name)
+
+    return render_template('guess_song.html', artist_name=artist_name, artist_tracks_json=all_tracks, max_strikes=strikes)
+
+def get_artist_info(name):
+    token = get_token()
+    artist_info = search_for_artist(token, name)
+    return artist_info
+   
+
 def get_tracks_hard(name):
     token = get_token()
     artist_info = search_for_artist(token, name)
