@@ -39,17 +39,20 @@ function replaceLettersNumbers(str, target)
     return str.replace(/[a-zA-Z0-9]/g, target);
 }
 
+// remove input HTML elements (keyboard, text box, etc.)
 function removeInputElements()
 {
     const inputDiv = document.getElementById("guessElementsDiv");
     inputDiv.remove();
 }
 
+// create streak cookie
 function createStreakCookie(val)
 {
     document.cookie = "streak="+val;
 }
 
+// resets streak cookie to 0, creates new cookie w/0 if need be
 function resetStreakCookie()
 {
     let c = document.cookie.split(";");
@@ -67,6 +70,7 @@ function resetStreakCookie()
     if (!updated) createStreakCookie(0); console.log("created Cookie w/0");
 }
 
+// increases the streak cookie by 1, creates new cookie w/1 if need be
 function increaseStreakCookie()
 {
     let c = document.cookie.split(";");
@@ -84,6 +88,7 @@ function increaseStreakCookie()
     if (!updated) createStreakCookie(1); console.log("created Cookie w/1");
 }
 
+// display streak in HTML
 function displayStreak()
 {
     var scoreDiv = document.getElementById("scoreDiv");
@@ -96,6 +101,7 @@ function displayStreak()
     scoreText.innerHTML = "Streak: "+getStreak();
 }
 
+// get streak value from document cookie
 function getStreak()
 {
     let c = document.cookie.split(";");
@@ -109,30 +115,6 @@ function getStreak()
     }
     return "-1";
 }
-
-
-// // add 1 point to score cookie, or initialize if hasnt been
-// function updateScoreCookie()
-// {
-//     var c = document.cookie;
-//     if (c == "")
-//     {
-//         document.cookie = "score=1";
-//     }
-//     else
-//     {
-//         var score;
-//         try { score = parseInt(c.split("=")[1]) + 1; }
-//         catch (e) { console.log(e); score = 1; }
-//         document.cookie = "score="+score;
-//     }
-// }
-
-// // deletes score cookie, called upon returning to main menu
-// function deleteScoreCookie()
-// {
-//     document.cookie = "score=; expires=Thu, 01 Jan 1970 00:00:00 UTC"
-// }
 
 // doesnt work on songs w/o features in parenthesis
 // for example: WISH FEAT. KIDDO MARV
@@ -229,6 +211,8 @@ if (current_state == chosen_song) // no English letters/numbers in the song
     finished = true;
     document.getElementById("song_name_hidden").innerHTML = chosen_song;
     document.getElementById("strikes").innerHTML = "Unfortunately, this does not support songs without English letters/numbers";
+    document.getElementById("buttonsDivBackup").appendChild(document.getElementById("buttonsDiv"));
+    loadButtons(document.getElementById("buttonsDiv"));
 }
 else
 {
@@ -345,6 +329,11 @@ function updateHangmanImage()
 {
     img = document.getElementById("hangman_img");
     img.src = hangman_paths[images_for_each_strike[max_strikes][strikes]];
+}
+
+function populateOverlayElements()
+{
+
 }
 
 // removes keyboard, input buttons, and shows album cover & score when user loses

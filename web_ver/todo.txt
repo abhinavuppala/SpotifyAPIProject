@@ -1,2 +1,2 @@
- - create different ending layouts with JS, avoid dupe IDs
  - Zdzisław Beksiński
+ Zbigniew Preisner

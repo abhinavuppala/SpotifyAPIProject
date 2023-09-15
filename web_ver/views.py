@@ -3,9 +3,24 @@ import requests, json, base64
 
 views = Blueprint(__name__, 'views')
 
-# DELETE THESE LATER !!!!!!
-CLIENT_ID = "093ad87f19ba4bf196af70d9a426eb90"
-CLIENT_SECRET = "329b53b645d24216b78160b5ceeb656f"
+"""
+TO RUN:
+Have a file client_credentials.json in the same directory
+as views.py, with 2 key-value pairs for "client_id" and "client_secret"
+
+For example:
+{
+    "client_id": "1234567890abcdefg",
+    "client_secret": "wxyz1234567890"
+}
+"""
+
+cc_file = open('spotify_client_info.json')
+cc_json = json.load(cc_file)
+
+# client credentials to request from API
+CLIENT_ID = cc_json['client_id']
+CLIENT_SECRET = cc_json['client_secret']
 
 # get access token from Spotify
 def get_token():
