@@ -11,13 +11,15 @@
 
 ## How to play
 
+Make sure you have a Spotify developer account in order to make requests using your own client_id and client_secret.
 1. Save the files from this repo to your local device.
 2. Make sure you have the correct Python libraries, as outlined in requirements.txt.
-3. Navigate to the web_ver directory and run app.py using command prompt like so:
+3. In client_credentials.json in the web_ver directory, change the client_id and client_secret from the placeholders.
+4. Navigate to the web_ver directory and run app.py using command prompt like so:
 ```cmd
 python app.py
 ```
-4. There should be a link to a development server in the command prompt. Follow this link to run the project locally.
+5. There should be a link to a development server in the command prompt, like shown below. Follow this link to run the project locally.
 ```cmd
 * Serving Flask app 'app'
  * Debug mode: on
