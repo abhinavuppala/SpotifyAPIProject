@@ -42,3 +42,24 @@ that game, along with additional buttons to return to the main menu or to play a
 - Uses cookies to save track info, avoid unnecessary API calls & significantly lower loading time
 - Easily customizable difficulty through changing strikes & possible songs
 - On-screen keyboard making mobile gameplay smoother & providing visual feedback
+
+## Screenshots
+
+![Home Page](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/429e2c45-eb65-47fe-a987-3eee66cd0a45)
+The user can pick any artist of their choice from Spotify, and change difficulty and amount of strikes to vary the overall difficulty of the game
+
+![Game (No Guesses)](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/35ca34bf-d292-4b0c-8251-07dbd3511c4c)
+Players can submit full phrase guesses or guess individual letters at a time, either by clicking the on-screen keyboard or typing in the input box
+
+![Game (Some Guesses)](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/894db5fa-f15d-4157-878e-5d5316dd3772)
+Correct and incorrect letters are shown through the keyboard's color changing, along with the hangman gradually approaching completion & the song name revealing
+
+![Win Screen](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/0eb7c8c7-6051-420d-9a1c-408e93421771)
+![Lose Screen](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/24623122-af52-4ca8-9317-58750c7faeeb)
+Upon winning or losing the game, the full song name and album cover are shown, along with keeping track of the player's current winstreak using cookies. The user gets options to go back to the home screen or to restart the game with the same artist & difficulty settings.
+
+
+
+
+
+
