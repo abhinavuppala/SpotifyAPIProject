@@ -61,6 +61,6 @@ Correct and incorrect letters are shown through the keyboard's color changing, a
 ![Lose Screen](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/24623122-af52-4ca8-9317-58750c7faeeb)
 Upon winning or losing the game, the full song name and album cover are shown, along with keeping track of the player's current winstreak using cookies. The user gets options to go back to the home screen or to restart the game with the same artist & difficulty settings.
 
+The website is fully responsive, working on screens of all sizes and dimensions, through utilization of Bootstrap CSS. This can be seen in the screenshots below:
 ![sh_responsive_1](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/5d9f962c-94a6-4788-a5ae-8fec60657d64) ![sh_responsive_2](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/f38a7796-5de6-4459-8643-7170c306ca7d) ![sh_responsive_3](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/11166b36-f21b-49da-b51d-8f9d438856f4)
 
-The website is fully responsive, working on screens of all sizes and dimensions, through utilization of Bootstrap CSS
