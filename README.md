@@ -11,16 +11,13 @@
 
 ## How to play
 
-You can play Song Hangman on any browser using this link: <http://songhangman.pythonanywhere.com/>
-Alternatively, if you want to download & host the server on your local device, follow these steps:
-
 1. Save the files from this repo to your local device.
 2. Make sure you have the correct Python libraries, as outlined in requirements.txt.
 3. Navigate to the web_ver directory and run app.py using command prompt like so:
 ```cmd
 python app.py
 ```
-4. There should be a link to a development server in the command prompt. Use this to run the project locally.
+4. There should be a link to a development server in the command prompt. Follow this link to run the project locally.
 
 ## How it works
 
