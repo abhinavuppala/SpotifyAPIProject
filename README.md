@@ -30,3 +30,5 @@ that game, along with additional buttons to return to the main menu or to play a
 
 - Responsive UI, functions & looks good on both mobile & desktop
 - Uses cookies to save track info, avoid unnecessary API calls & significantly lower loading time
+- Easily customizable difficulty through changing strikes & possible songs
+- On-screen keyboard making mobile gameplay smoother & providing visual feedback
