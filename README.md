@@ -49,7 +49,7 @@ that game, along with additional buttons to return to the main menu or to play a
 The user can pick any artist of their choice from Spotify, and change difficulty and amount of strikes to vary the overall difficulty of the game
 
 
-![Game (No Guesses)](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/35ca34bf-d292-4b0c-8251-07dbd3511c4c)
+![Game (No Guesses)](https://github.com/abhinavuppala/SpotifyAPIProject/blob/main/web_ver/readme_images/sh_no_guesses.png)
 Players can submit full phrase guesses or guess individual letters at a time, either by clicking the on-screen keyboard or typing in the input box
 
 
