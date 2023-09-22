@@ -53,17 +53,17 @@ The user can pick any artist of their choice from Spotify, and change difficulty
 Players can submit full phrase guesses or guess individual letters at a time, either by clicking the on-screen keyboard or typing in the input box
 
 
-![Game (Some Guesses)](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/894db5fa-f15d-4157-878e-5d5316dd3772)
+![Game (Some Guesses)](https://github.com/abhinavuppala/SpotifyAPIProject/blob/main/web_ver/readme_images/sh_some_guesses.png)
 Correct and incorrect letters are shown through the keyboard's color changing, along with the hangman gradually approaching completion & the song name revealing
 
 
-![Win Screen](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/0eb7c8c7-6051-420d-9a1c-408e93421771)
-![Lose Screen](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/24623122-af52-4ca8-9317-58750c7faeeb)
+![Win Screen](https://github.com/abhinavuppala/SpotifyAPIProject/blob/main/web_ver/readme_images/sh_win.png)
+![Lose Screen](https://github.com/abhinavuppala/SpotifyAPIProject/blob/main/web_ver/readme_images/sh_lose.png)
 Upon winning or losing the game, the full song name and album cover are shown, along with keeping track of the player's current winstreak using cookies. The user gets options to go back to the home screen or to restart the game with the same artist & difficulty settings.
 
 The website is fully responsive, working on screens of all sizes and dimensions, through utilization of Bootstrap CSS. This can be seen in the screenshots below:
 
-![Responsive_1](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/5d9f962c-94a6-4788-a5ae-8fec60657d64)
-![Responsive_2](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/f38a7796-5de6-4459-8643-7170c306ca7d)
-![Responsive_3](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/11166b36-f21b-49da-b51d-8f9d438856f4)
+![Responsive Home Page](https://github.com/abhinavuppala/SpotifyAPIProject/blob/main/web_ver/readme_images/sh_responsive_1.png)
+![Responsive Game Page](https://github.com/abhinavuppala/SpotifyAPIProject/blob/main/web_ver/readme_images/sh_responsive_2.png)
+![Responsive Win Page](https://github.com/abhinavuppala/SpotifyAPIProject/blob/main/web_ver/readme_images/sh_responsive_3.png)
 
