@@ -45,7 +45,7 @@ that game, along with additional buttons to return to the main menu or to play a
 
 ## Screenshots
 
-![Home Page](https://github.com/abhinavuppala/SpotifyProject/assets/64037392/429e2c45-eb65-47fe-a987-3eee66cd0a45)
+![Home Page](https://github.com/abhinavuppala/SpotifyAPIProject/blob/main/web_ver/readme_images/sh_home_page.png)
 The user can pick any artist of their choice from Spotify, and change difficulty and amount of strikes to vary the overall difficulty of the game
 
 
