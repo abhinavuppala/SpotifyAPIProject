@@ -11,6 +11,8 @@
 
 ## How to play
 
+Currently not hosted online, so you'll have to download the source code & set up your own local server. Working on hosting it online soon.
+
 Make sure you have a Spotify developer account in order to make requests using your own client_id and client_secret.
 1. Save the files from this repo to your local device.
 2. Make sure you have the correct Python libraries, as outlined in requirements.txt.
