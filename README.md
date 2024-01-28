@@ -11,7 +11,10 @@
 
 ## How to play
 
-Currently not hosted online, so you'll have to download the source code & set up your own local server. Working on hosting it online soon.
+The website is currently hosted as of 1/27/24:
+http://songhangman.pythonanywhere.com/
+
+If you want to host it on your own server, follow the directions below:
 
 Make sure you have a Spotify developer account in order to make requests using your own client_id and client_secret.
 1. Save the files from this repo to your local device.
