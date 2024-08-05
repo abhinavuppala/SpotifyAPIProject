@@ -11,9 +11,6 @@
 
 ## How to play
 
-The website is currently hosted as of 1/27/24:
-http://songhangman.pythonanywhere.com/
-
 If you want to host it on your own server, follow the directions below:
 
 Make sure you have a Spotify developer account in order to make requests using your own client_id and client_secret.
